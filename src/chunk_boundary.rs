@@ -6,6 +6,6 @@ pub struct ChunkBoundary {
 
 impl ChunkBoundary {
     pub fn end_offset(&self) -> u64 {
-        todo!("return the first byte offset after this chunk")
+        self.offset + self.size as u64
     }
 }
