@@ -50,8 +50,9 @@ impl Chunker {
             return None;
         }
 
-        if self.chunk_size >= protocol::MAX_CHUNK_SIZE as u32 
-            || (self.hash.value() & protocol::BOUNDARY_MASK) == 0 {
+        if self.chunk_size >= protocol::MAX_CHUNK_SIZE as u32
+            || (self.hash.value() & protocol::BOUNDARY_MASK) == 0
+        {
             let boundary = ChunkBoundary {
                 offset: self.chunk_offset,
                 size: self.chunk_size,
@@ -71,4 +72,3 @@ impl Default for Chunker {
         Self::new()
     }
 }
-

@@ -40,7 +40,10 @@ fn emits_contiguous_boundaries() {
 
     for boundary in boundaries {
         assert_eq!(boundary.offset, expected_offset);
-        assert_eq!(boundary.end_offset(), expected_offset + u64::from(boundary.size));
+        assert_eq!(
+            boundary.end_offset(),
+            expected_offset + u64::from(boundary.size)
+        );
         expected_offset = boundary.end_offset();
     }
 }

@@ -1,12 +1,9 @@
 use std::fs;
 use std::path::Path;
 
-use xet_cdc::{
-    ChunkBoundary, Chunker, ReferenceChunk, hash_chunk, parse_reference_manifest,
-};
+use xet_cdc::{ChunkBoundary, Chunker, ReferenceChunk, hash_chunk, parse_reference_manifest};
 
-const REFERENCE_FILE: &str =
-    "reference-data/Electric_Vehicle_Population_Data_20250917.csv";
+const REFERENCE_FILE: &str = "reference-data/Electric_Vehicle_Population_Data_20250917.csv";
 const REFERENCE_MANIFEST: &str =
     "reference-data/Electric_Vehicle_Population_Data_20250917.csv.chunks";
 
@@ -78,8 +75,8 @@ fn reproduces_the_official_reference_manifest() {
 
     let data = fs::read(file).expect("failed to read reference CSV");
     let manifest_text = fs::read_to_string(manifest).expect("failed to read reference manifest");
-    let expected = parse_reference_manifest(&manifest_text)
-        .expect("failed to parse reference manifest");
+    let expected =
+        parse_reference_manifest(&manifest_text).expect("failed to parse reference manifest");
 
     assert_eq!(expected.len(), 796);
 
@@ -89,9 +86,7 @@ fn reproduces_the_official_reference_manifest() {
     let actual = hash_chunks(&data, &boundaries);
     assert_eq!(actual.len(), expected.len());
 
-    for (index, (actual_chunk, expected_chunk)) in
-        actual.iter().zip(expected.iter()).enumerate()
-    {
+    for (index, (actual_chunk, expected_chunk)) in actual.iter().zip(expected.iter()).enumerate() {
         assert_eq!(
             actual_chunk.size, expected_chunk.size,
             "size mismatch at chunk {index}"

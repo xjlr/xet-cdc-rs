@@ -19,9 +19,7 @@ fn parses_single_entry() {
 
 #[test]
 fn preserves_manifest_order() {
-    let text = format!(
-        "{HASH0} 131072\n{HASH1} 106099\n{HASH2} 61389\n"
-    );
+    let text = format!("{HASH0} 131072\n{HASH1} 106099\n{HASH2} 61389\n");
 
     assert_eq!(
         parse_reference_manifest(&text).unwrap(),
@@ -80,9 +78,7 @@ fn rejects_missing_or_extra_fields() {
 
 #[test]
 fn error_reports_failing_line_number() {
-    let text = format!(
-        "{HASH0} 131072\n{HASH1} 106099\n{HASH2} oops\n"
-    );
+    let text = format!("{HASH0} 131072\n{HASH1} 106099\n{HASH2} oops\n");
 
     let error = parse_reference_manifest(&text).unwrap_err();
     assert!(error.contains("line 3"), "unexpected error: {error}");

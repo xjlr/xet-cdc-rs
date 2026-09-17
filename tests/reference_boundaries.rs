@@ -3,8 +3,7 @@ use std::path::Path;
 
 use xet_cdc::{ChunkBoundary, Chunker};
 
-const REFERENCE_FILE: &str =
-    "reference-data/Electric_Vehicle_Population_Data_20250917.csv";
+const REFERENCE_FILE: &str = "reference-data/Electric_Vehicle_Population_Data_20250917.csv";
 const REFERENCE_MANIFEST: &str =
     "reference-data/Electric_Vehicle_Population_Data_20250917.csv.chunks";
 
