@@ -1,3 +1,5 @@
+use std::fmt::Write;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ChunkHash {
     pub bytes: [u8; 32],
@@ -14,4 +16,36 @@ pub fn hash_chunk(data: &[u8]) -> ChunkHash {
     ChunkHash {
         bytes: *blake3::keyed_hash(&DATA_KEY, data).as_bytes(),
     }
+}
+
+pub fn to_xet_hex(hash: &ChunkHash) -> String {
+    let mut result = String::with_capacity(64);
+    for block in hash.bytes.chunks(8) {
+        for byte in block.iter().rev() {
+            write!(&mut result, "{byte:02x}")
+                .expect("writing to String cannot fail");
+        }
+    }
+    result
+}
+
+pub fn parse_xet_hash(text: &str) -> Result<ChunkHash, String> {
+    if text.len() != 64 {
+        return Err(format!("Invalid hash length: expected 64 characters, got {}", text.len()));
+    }
+
+    const HEX_CHARS: &str = "0123456789abcdef";
+    if !text.chars().all(|c| HEX_CHARS.contains(c)) {
+        return Err("Invalid hash format: expected lowercase hexadecimal characters".to_string());
+    }
+
+    let mut hash  = ChunkHash { bytes: [0u8; 32] };
+
+    for i in 0..32 {
+        let dst = 8 * (i / 8) + (7 - i % 8);
+        let byte_str = &text[i * 2..i * 2 + 2];
+        hash.bytes[dst] = u8::from_str_radix(byte_str, 16).map_err(|e| format!("Failed to parse byte {}: {}", i, e))?;
+    }
+
+    Ok(hash)
 }
